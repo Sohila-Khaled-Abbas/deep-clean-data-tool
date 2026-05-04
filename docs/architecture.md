@@ -45,10 +45,10 @@ graph TD
     %% Styling
     style Input fill:#0a0c10,stroke:#8892b0,stroke-width:2px,color:#fff
     style Output fill:#05070a,stroke:#00d4ff,stroke-width:3px,color:#00d4ff
-    style DataIntegrity fill:rgba(0,212,255,0.05),stroke:#00d4ff,stroke-dasharray: 5 5
-    style FeatureEngineering fill:rgba(0,212,255,0.05),stroke:#00d4ff,stroke-dasharray: 5 5
-    style QualityControl fill:rgba(0,212,255,0.05),stroke:#00d4ff,stroke-dasharray: 5 5
-    style Normalization fill:rgba(0,212,255,0.05),stroke:#00d4ff,stroke-dasharray: 5 5
+    style DataIntegrity fill:#161b22,stroke:#00d4ff,stroke-dasharray: 5 5
+    style FeatureEngineering fill:#161b22,stroke:#00d4ff,stroke-dasharray: 5 5
+    style QualityControl fill:#161b22,stroke:#00d4ff,stroke-dasharray: 5 5
+    style Normalization fill:#161b22,stroke:#00d4ff,stroke-dasharray: 5 5
 ```
 
 ## Transformation Logic Details

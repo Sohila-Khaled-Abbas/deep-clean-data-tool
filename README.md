@@ -36,8 +36,8 @@ graph TD
 
     style Input fill:#0a0c10,stroke:#8892b0,stroke-width:2px,color:#fff
     style Output fill:#05070a,stroke:#00d4ff,stroke-width:3px,color:#00d4ff
-    style Dup fill:rgba(0,212,255,0.05),stroke:#00d4ff
-    style Scale fill:rgba(0,212,255,0.05),stroke:#00d4ff
+    style Dup fill:#161b22,stroke:#00d4ff
+    style Scale fill:#161b22,stroke:#00d4ff
 ```
 
 ---
