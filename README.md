@@ -1,68 +1,68 @@
-# DeepClean: Automated Data Engineering Pipeline
+# DeepClean OS
 
 ![Python Version](https://img.shields.io/badge/python-3.8%2B-blue.svg)
 ![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
-![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)
+[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://deep-clean-os.streamlit.app/)
 
-### Core Technologies
+### Live Deployment
+**Production URL**: [https://deep-clean-os.streamlit.app/](https://deep-clean-os.streamlit.app/)
+
+---
+
+DeepClean OS is an automated data engineering pipeline designed to transform raw, messy datasets into high-fidelity, ML-ready assets. Utilizing a modular **Bento Grid Architecture**, it provides both a programmatic engine and a sleek, night-mode web interface.
+
+### Technical Stack
 ![Pandas](https://img.shields.io/badge/pandas-2.0%2B-150458.svg?style=flat&logo=pandas&logoColor=white)
 ![NumPy](https://img.shields.io/badge/numpy-1.24%2B-013243.svg?style=flat&logo=numpy&logoColor=white)
 ![Scikit-Learn](https://img.shields.io/badge/scikit--learn-1.2%2B-F7931E.svg?style=flat&logo=scikit-learn&logoColor=white)
 ![SciPy](https://img.shields.io/badge/scipy-1.10%2B-8CAAE6.svg?style=flat&logo=scipy&logoColor=white)
-![Matplotlib](https://img.shields.io/badge/matplotlib-3.7%2B-11557c.svg?style=flat&logo=plotly&logoColor=white)
-![Seaborn](https://img.shields.io/badge/seaborn-0.12%2B-444444.svg?style=flat)
 ![Streamlit](https://img.shields.io/badge/streamlit-1.24%2B-FF4B4B.svg?style=flat&logo=streamlit&logoColor=white)
 
-DeepClean is a robust Python-based framework designed to automate the critical stages of the Data Engineering cleaning lifecycle. It is available as both a reproducible Python class for programmatic use and a professional Streamlit Web Application for interactive data processing.
+---
 
-## Technical Capabilities
+## 📐 System Architecture
 
-| Module | Description | Statistical Method |
+The pipeline follows a strict **Sequential Dependency Chain** to ensure data integrity at every stage of the transformation process.
+
+```mermaid
+graph TD
+    Input[/CSV Payload/] --> Dup[Duplicate Scrubber]
+    Dup --> Temp[Temporal Transformer]
+    Temp --> Imp[Statistical Imputer]
+    Imp --> Out[Outlier Clipper]
+    Out --> Enc[Categorical Encoder]
+    Enc --> Scale[Feature Scaler]
+    Scale --> Output[/Cleaned Dataset/]
+
+    style Input fill:#0a0c10,stroke:#8892b0,stroke-width:2px,color:#fff
+    style Output fill:#05070a,stroke:#00d4ff,stroke-width:3px,color:#00d4ff
+    style Dup fill:rgba(0,212,255,0.05),stroke:#00d4ff
+    style Scale fill:rgba(0,212,255,0.05),stroke:#00d4ff
+```
+
+---
+
+## 🛠️ Operational Modules
+
+| Module | Technical Logic | Implementation |
 | :--- | :--- | :--- |
-| **Night Edition UI** | Dark-themed interactive CSV dashboard. | Streamlit + SVG |
-| **Integrity Engine** | Identifies and removes redundant observations. | Exact Row Matching |
-| **Temporal Processor** | Deconstructs timestamps into numerical features. | Feature Extraction |
-| **Quality Control** | Imputes missing values in numerical columns. | Mean/Median/Mode |
-| **Outlier Shield** | Detects and clips extreme statistical anomalies. | Z-Score (3.0 Sigma) |
-| **Feature Scaler** | Standardizes numerical ranges for model readiness. | Z-score/Min-Max |
+| **Integrity Engine** | Exact row-hash matching and removal. | `drop_duplicates()` |
+| **Temporal Transformer** | Deconstruction of timestamps into Y/M/D/W features. | `pd.to_datetime` |
+| **Quality Control** | Statistical mean/median/mode imputation. | `SimpleImputer` |
+| **Outlier Shield** | 3-Sigma Z-score clipping and Winsorization. | `scipy.stats` |
+| **Model Readiness** | Label encoding and feature standardization. | `StandardScaler` |
 
-## Repository Architecture
+---
 
-```text
-├── src/
-│   └── cleaner.py             # Core DeepClean logic
-├── docs/
-│   └── architecture.md        # Technical design and diagrams
-├── app.py                     # Streamlit Night Edition Application
-├── data_cleaning_tool.ipynb   # Interactive demonstration
-├── requirements.txt           # Dependency manifest
-├── LICENSE                    # MIT License
-└── README.md                  # Project overview
-```
+## 🚀 Getting Started
 
-## Installation and Deployment
+### Web Interface (Recommended)
+Access the live environment at: [deep-clean-os.streamlit.app](https://deep-clean-os.streamlit.app/)
 
-### Local Environment
-1. Clone the repository and navigate to the folder.
-2. Install dependencies:
-   ```bash
-   pip install -r requirements.txt
-   ```
-3. Launch the Night Edition app:
-   ```bash
-   streamlit run app.py
-   ```
+### Local Development
+1. Clone the repository.
+2. Install dependencies: `pip install -r requirements.txt`.
+3. Launch the OS: `streamlit run app.py`.
 
-### Programmatic Usage
-```python
-from src.cleaner import DeepClean
-
-cleaner = DeepClean(dataframe)
-cleaned_df = cleaner.clean()
-```
-
-## Technical Documentation
-Detailed architectural diagrams and logic flows are available in the [Documentation](docs/architecture.md) directory.
-
-## License
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+## 📄 License
+Licensed under the MIT License. See [LICENSE](LICENSE) for details.
