@@ -4,202 +4,187 @@ import numpy as np
 from src.cleaner import DeepClean
 import io
 
-# SVG Icons as constants
-SVG_CLEAN = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v19M5 8l7-5 7 5M5 16l7 5 7-5"/></svg>'
-SVG_UPLOAD = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>'
-SVG_CHART = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>'
+# SVG Assets
+SVG_CLEAN = '<svg viewBox="0 0 24 24" width="32" height="32" stroke="#00d4ff" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v19M5 8l7-5 7 5M5 16l7 5 7-5"/></svg>'
+SVG_DATA = '<svg viewBox="0 0 24 24" width="24" height="24" stroke="#00d4ff" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2H2v10h10V2zM22 2h-10v10h10V2zM12 12H2v10h10V12zM22 12h-10v10h10V12z"/></svg>'
 
-# Page Configuration
-st.set_page_config(
-    page_title="DeepClean",
-    page_icon="💠",
-    layout="wide"
-)
+st.set_page_config(page_title="DeepClean", page_icon="💠", layout="wide")
 
-# Night Mode CSS
+# Modern Bento Grid CSS
 st.markdown("""
     <style>
-    @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@300;400;600&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700&display=swap');
     
-    /* Global Background Override */
+    html, body, [class*="css"] {
+        font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
     .stApp {
-        background-color: #0e1117;
-        color: #e6edf3;
+        background-color: #05070a;
+        color: #ccd6f6;
     }
 
-    /* Gradient Header (Night Edition) */
-    .header-container {
-        background: linear-gradient(135deg, #161b22 0%, #21262d 100%);
-        padding: 50px;
-        border-radius: 15px;
-        border: 1px solid #30363d;
-        color: #58a6ff;
+    /* Bento Header */
+    .bento-header {
+        background: rgba(17, 25, 40, 0.75);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 20px;
+        padding: 40px;
         text-align: center;
-        margin-bottom: 30px;
-        box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+        margin-bottom: 25px;
     }
 
-    /* Metric Cards (Night Edition) */
-    .metric-container {
-        display: flex;
-        justify-content: space-between;
+    /* Bento Grid System */
+    .bento-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
         gap: 20px;
-        margin: 20px 0;
+        margin-bottom: 20px;
     }
 
-    .metric-card {
-        background-color: #161b22;
-        padding: 25px;
-        border-radius: 12px;
-        border: 1px solid #30363d;
-        border-top: 4px solid #58a6ff;
-        box-shadow: 0 4px 6px rgba(0,0,0,0.2);
-        flex: 1;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    .bento-item {
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 16px;
+        padding: 24px;
+        transition: all 0.3s ease;
     }
 
-    .metric-card:hover {
-        transform: translateY(-8px);
-        border-color: #58a6ff;
-        box-shadow: 0 12px 20px rgba(0,0,0,0.4);
+    .bento-item:hover {
+        background: rgba(255, 255, 255, 0.05);
+        border-color: #00d4ff;
+        transform: scale(1.02);
     }
 
-    .metric-label {
-        font-size: 0.75rem;
-        color: #8b949e;
+    .bento-label {
+        font-size: 0.7rem;
+        color: #8892b0;
+        font-weight: 700;
+        letter-spacing: 2px;
         text-transform: uppercase;
-        font-weight: 700;
-        letter-spacing: 1.5px;
+        margin-bottom: 8px;
     }
 
-    .metric-value {
+    .bento-value {
         font-size: 1.8rem;
-        color: #ffffff;
+        color: #00d4ff;
         font-weight: 700;
-        margin-top: 8px;
-        font-family: 'JetBrains Mono', monospace;
     }
 
-    /* Sidebar Styling */
+    /* Sidebar Refinement */
     section[data-testid="stSidebar"] {
-        background-color: #010409;
-        border-right: 1px solid #30363d;
+        background-color: #0a0c10;
+        border-right: 1px solid rgba(255,255,255,0.05);
     }
 
-    /* Dark Mode Buttons */
+    /* Neon Button */
     .stButton>button {
-        background: #238636;
-        color: white;
-        border: 1px solid rgba(240,246,252,0.1);
+        background: transparent;
+        color: #00d4ff;
+        border: 2px solid #00d4ff;
         padding: 12px 24px;
-        border-radius: 6px;
-        font-weight: 600;
+        border-radius: 12px;
+        font-weight: 700;
         width: 100%;
-        transition: background 0.2s;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        transition: all 0.3s;
     }
 
     .stButton>button:hover {
-        background: #2ea043;
-        border-color: #8b949e;
+        background: rgba(0, 212, 255, 0.1);
+        box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
     }
 
-    /* Tabs Styling */
-    .stTabs [data-baseweb="tab"] {
-        color: #8b949e;
-    }
-    .stTabs [aria-selected="true"] {
-        color: #58a6ff !important;
-        border-bottom-color: #58a6ff !important;
-    }
-    
-    /* Code blocks and dataframes */
-    code {
-        color: #ff7b72 !important;
+    /* Clean UI for Dataframes */
+    .stDataFrame {
+        border-radius: 12px;
+        overflow: hidden;
+        border: 1px solid rgba(255,255,255,0.05);
     }
     </style>
     """, unsafe_allow_html=True)
 
-# Custom Header
-st.markdown("""
-    <div class="header-container">
-        <h1 style='margin:0; font-weight:700; color:#f0f6fc; letter-spacing:-1px;'>DEEPCLEAN <span style='color:#58a6ff'>PRO</span></h1>
-        <p style='margin:10px 0 0 0; color:#8b949e; font-size:1.1rem;'>Night Edition • High-Performance Data Engineering</p>
+# App Header
+st.markdown(f"""
+    <div class="bento-header">
+        <div style="margin-bottom:15px;">{SVG_CLEAN}</div>
+        <h1 style='margin:0; font-size:2.5rem; letter-spacing:-1px; color:#ffffff;'>DeepClean <span style="color:#00d4ff; font-weight:300;">OS</span></h1>
+        <p style='color:#8892b0; margin-top:10px;'>Advanced Data Engineering Intelligence</p>
     </div>
     """, unsafe_allow_html=True)
 
-# Sidebar Configuration
+# Sidebar
 with st.sidebar:
-    st.markdown(f"<div style='text-align:center;'>{SVG_CLEAN}</div>", unsafe_allow_html=True)
-    st.title("Settings")
+    st.markdown("### CONFIGURATION")
+    scale_type = st.selectbox("Scaling", ["Standard", "MinMax"])
+    strategy = st.selectbox("Imputation", ["mean", "median", "mode"])
+    z_limit = st.slider("Z-Threshold", 1.0, 5.0, 3.0)
     st.divider()
-    scaling_method = st.selectbox("Normalization", ["StandardScaler", "MinMaxScaler"])
-    impute_strategy = st.selectbox("Imputation", ["mean", "median", "most_frequent"])
-    outlier_threshold = st.slider("Z-Threshold", 1.0, 5.0, 3.0)
-    st.divider()
-    st.caption("Engine: v2.1.0-dark")
+    st.caption("Environment: Cloud-Optimized")
 
-# Main Interface
-st.markdown(f"### {SVG_UPLOAD} Data Ingestion", unsafe_allow_html=True)
-uploaded_file = st.file_uploader("", type="csv", label_visibility="collapsed")
+# Main Logic
+file = st.file_uploader("DROP DATASET HERE", type="csv")
 
-if uploaded_file is not None:
-    df_raw = pd.read_csv(uploaded_file)
+if file:
+    df_raw = pd.read_csv(file)
     
-    tab1, tab2 = st.tabs(["Analysis", "Cleaning Pipeline"])
+    col_l, col_r = st.columns([1, 2])
     
-    with tab1:
-        st.markdown(f"#### {SVG_CHART} Raw Metadata", unsafe_allow_html=True)
-        st.dataframe(df_raw.head(10), use_container_width=True)
-        
-        c1, c2, c3 = st.columns(3)
-        with c1:
-            st.markdown('<div class="metric-card"><div class="metric-label">Shape</div><div class="metric-value">'+str(df_raw.shape)+'</div></div>', unsafe_allow_html=True)
-        with c2:
-            st.markdown('<div class="metric-card"><div class="metric-label">Null Entries</div><div class="metric-value">'+str(df_raw.isnull().sum().sum())+'</div></div>', unsafe_allow_html=True)
-        with c3:
-            st.markdown('<div class="metric-card"><div class="metric-label">Duplicates</div><div class="metric-value">'+str(df_raw.duplicated().sum())+'</div></div>', unsafe_allow_html=True)
+    with col_l:
+        st.markdown("#### INPUT BUFFER")
+        st.code(f"Records: {df_raw.shape[0]}\nFields: {df_raw.shape[1]}")
+        if st.button("INITIATE PIPELINE"):
+            st.session_state.process = True
+            
+    with col_r:
+        st.markdown("#### RAW PREVIEW")
+        st.dataframe(df_raw.head(8), use_container_width=True)
 
-    with tab2:
-        if st.button("RUN PIPELINE"):
-            with st.spinner("Processing..."):
-                cleaner = DeepClean(df_raw)
-                cleaner.remove_duplicates()
-                cleaner.process_dates()
-                cleaner.handle_missing_values(strategy=impute_strategy)
-                cleaner.handle_outliers(threshold=outlier_threshold)
-                cleaner.encode_categorical()
-                cleaner.normalize_data(method='standard' if "Standard" in scaling_method else 'minmax')
-                
-                df_cleaned = cleaner.df
-                report = cleaner.get_summary()
+    if st.session_state.get('process', False):
+        with st.spinner("Processing..."):
+            cleaner = DeepClean(df_raw)
+            cleaner.remove_duplicates()
+            cleaner.process_dates()
+            cleaner.handle_missing_values(strategy=strategy)
+            cleaner.handle_outliers(threshold=z_limit)
+            cleaner.encode_categorical()
+            cleaner.normalize_data(method='standard' if scale_type == "Standard" else 'minmax')
+            
+            df_final = cleaner.df
+            metrics = cleaner.get_summary()
 
-                st.markdown("<div class='metric-container'>", unsafe_allow_html=True)
-                cols = st.columns(len(report))
-                for i, (key, value) in enumerate(report.items()):
-                    with cols[i]:
-                        st.markdown(f"""
-                            <div class="metric-card">
-                                <div class="metric-label">{key.replace('_', ' ')}</div>
-                                <div class="metric-value">{value}</div>
-                            </div>
-                        """, unsafe_allow_html=True)
-                st.markdown("</div>", unsafe_allow_html=True)
-                
-                st.dataframe(df_cleaned.head(10), use_container_width=True)
+            # Bento Grid Results
+            st.divider()
+            st.markdown("#### TRANSFORMATION REPORT")
+            
+            # Rendering metrics in a Bento Grid
+            cols = st.columns(4)
+            for i, (k, v) in enumerate(metrics.items()):
+                with cols[i % 4]:
+                    st.markdown(f"""
+                        <div class="bento-item">
+                            <div class="bento-label">{k.replace('_', ' ')}</div>
+                            <div class="bento-value">{v}</div>
+                        </div>
+                    """, unsafe_allow_html=True)
 
-                csv = df_cleaned.to_csv(index=False).encode('utf-8')
-                st.download_button(
-                    label="DOWNLOAD CLEANED CSV",
-                    data=csv,
-                    file_name=f"DeepClean_Night_{uploaded_file.name}",
-                    mime='text/csv',
-                )
+            st.divider()
+            st.markdown("#### OUTPUT STREAM")
+            st.dataframe(df_final.head(10), use_container_width=True)
+            
+            # Export
+            res_csv = df_final.to_csv(index=False).encode('utf-8')
+            st.download_button("EXPORT CLEANED DATA", res_csv, f"DeepClean_{file.name}", "text/csv")
 
 else:
     st.markdown("""
-        <div style='background-color:#161b22; padding:30px; border-radius:12px; border: 1px solid #30363d;'>
-            <h3 style='margin-top:0; color:#58a6ff;'>Operational Readiness</h3>
-            <p style='color:#8b949e;'>Awaiting CSV payload. The system will execute the following modules upon ingestion:</p>
-            <code style='color:#79c0ff;'>Duplicates | Temporal | Imputation | Outliers | Encoding | Normalization</code>
+        <div class="bento-item" style="text-align:center; padding:60px;">
+            <div style="color:#8892b0; font-size:1.1rem;">
+                Awaiting Data Payload...<br>
+                <span style="font-size:0.8rem; opacity:0.6;">Upload a CSV to begin automated cleaning.</span>
+            </div>
         </div>
     """, unsafe_allow_html=True)
