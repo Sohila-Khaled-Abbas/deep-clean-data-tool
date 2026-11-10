@@ -19,7 +19,7 @@
 
 <p align="center">
   <a href="https://deep-clean-os.streamlit.app/">
-    <img src="assets/deepclean-ui-preview.png" alt="DeepClean OS Streamlit interface preview, showing its configuration sidebar, CSV upload area, and awaiting-data state" width="100%">
+    <img src="assets/deepclean-ui-preview.svg" alt="DeepClean OS Streamlit interface preview, showing its configuration sidebar, CSV upload area, and awaiting-data state" width="100%">
   </a>
 </p>
 <p align="center"><sub>Static UI preview based on the current application layout and default settings. Launch the deployed app for the interactive experience.</sub></p>
